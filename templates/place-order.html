@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Right HR Solutions – HR Solutions & Professional Services{% endblock title %}
+
+ {% block content %}
+      <section id="page_header" class="page-header d-flex align-items-center justify-center"
+      style="background-image: url({% static '' %}/assets/img/image/place-order-page.png);">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row d-flex align-items-center justify-center">
+            <div class="col-md-5 page-header-content">
+              <h1 class="page-title">Place Your Order</h1>
+              <h5 class="text">Get started with Right HR Solutions by placing an order for our comprehensive HR and
+                professional services.</h5>
+            </div>
+          </div>
+          <!-- End row -->
+          <!-- End container -->
+      </section>
+      <!-- End Page Title  -->
+      <!-- Place Order Section  -->
+      <section id="place_order">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="section-content">
+                <div class="row g-5 align-items-center justify-center">
+                  <div class="col-md-12">
+                    <div class="order-form-wrapper">
+                      <form method="post" action="{% url 'placeorder' %}" enctype="multipart/form-data" class="needs-validation" id="dynamicForm" novalidate>
+                        {% csrf_token %}
+                        <div class="form-section">
+                          <div class="form-heading">
+                            <h3 class="title">Select Category</h3>
+                            <h6 class="sub-title">Choose from our broad range of service categories. </h6>
+                          </div>
+                          <div class="form-body">
+                            <div class="category-list-group list-group list-group-checkable">
+
+                              {% for service in services %}
+                              <input class="list-group-item-check pe-none" type="radio" name="categoriesList"
+                              data-category="{{ service.name }}" id="{{ service.name }}" value="{{ service.id }}" data-price="{{ service.price }}">
+                       <label class="list-group-item rounded-3 py-3" for="{{ service.name }}">
+                                <div class="service-category">
+                                  <img class="service-icon" src="{{ service.icon.url }}"
+                                    alt="Apostille Service">
+                                  <h6 class="service-heading">{{ service.name }}</h6>
+                                  <p class="price">${{ service.price }}</p>
+                                  <input type="hidden" name="prices[Apostille_Service]" value="109.00">
+                                </div>
+                              </label>
+                              {% endfor %}
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-section" id="customizeOrderSection">
+                          <div class="form-heading">
+                            <h3 class="title">Customize Your Order</h3>
+                            <h6 class="sub-title">Specify details unique to your requirements. </h6>
+                          </div>
+                          <div class="form-body">
+                            
+                            <div id="formContainer">
+                              <div class="step_form_process">
+                    
+                                <div class="row g-4">
+                                  <div class="col-12 col-sm-12 col-md-6">
+                                    <label class="form-label">Documents</label>
+                                    <select class="form-select" name="type" required>
+                                      <option value="">Identity Card</option>
+                                      <option>Citizenship card</option>
+                                      <option>Resident card</option>
+                                      <option>Passport</option>
+                                      <option>Driving License</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-12 col-sm-12 col-md-6">
+                                    <label class="form-label">Upload Documents</label>
+                                    <div class="input-group">
+                                      <input type="file" name="upload_documents" class="form-control" accept=".jpg, .jpeg, .png, .pdf" multiple required>
+
+                                    </div>
+                                    <small class="form-text text-muted">Accepted formats: JPG, PNG, PDF. Max size: 5MB.</small>
+                                    <div class="invalid-feedback">Please upload a file in JPG, PNG, or PDF format.</div>
+                                  </div>
+                                  <div class="col-12 col-sm-12 col-md-2">
+                                    <div class="step_process">
+                                      <button type="button" class="plus btn btn-success">+</button>
+                                      <button type="button" class="minus btn btn-danger">-</button>
+                                    </div>
+                                  </div>
+                          
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row g-4">
+
+                              <div class="col-12 col-sm-6 col-md-6">
+                                <label for="pickDate" class="form-label">Select Date</label>
+                                <input type="date" class="form-control" id="pickDate" name="pick_date" placeholder="Select Date" value=""
+                                  required>
+                                <div class="invalid-feedback"> Please select a date. </div>
+                              </div>
+                              <div class="col-12 col-sm-6 col-md-6">
+                                <label for="pickTime" class="form-label">Set Time</label>
+                                <select class="form-control" id="pickTime" name ="pick_time" required>
+                                  <option value="">Select a time</option>
+                                </select>
+                                <div class="invalid-feedback">Select between 8:00 AM and 6:00 PM.</div>
+                              </div>
+                              <div class="col-12">
+                                <label for="commentsQuestions" class="form-label">Comments or Questions <span
+                                    class="small">(Optional)</span>
+                                </label>
+                                <textarea class="form-control" id="commentsQuestions" placeholder="" name ="comments_questions" ></textarea>
+                                <div class="invalid-feedback"> Please enter your comments or questions. </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-section" id="orderConfirmSection">
+                          <div class="form-heading">
+                            <h3 class="title">Confirm Order</h3>
+                            <h6 class="sub-title">Confirm your order to proceed
+                              to the next step. </h6>
+                          </div>
+                          <div class="form-body">
+                            <div class="row g-4">
+                              <div class="col-12">
+                                <div class="form-check">
+                                  <input type="checkbox" class="form-check-input" id="acceptTermsConditions" name="terms_accepted" required>
+                                  <label class="form-check-label" for="acceptTermsConditions">I do accept the <a
+                                      href="/terms-conditions">Terms and Conditions</a>
+                                  </label>
+                                  <div class="invalid-feedback">You must accept the terms and conditions. </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <button class="mt-4 btn btn-big" type="submit" id="submitButton" disabled>Complete your
+                            order</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- End Place Order Section  -->
+
+    </main>
+    <!-- End Main Body -->
+ 
+    {% endblock content %}
